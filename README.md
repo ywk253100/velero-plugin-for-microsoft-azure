@@ -152,14 +152,17 @@ of your cluster's resources before continuing._
 
 ## Set permissions for Velero
 
-There are several ways Velero can authenticate to Azure: (1) by using a Velero-specific [service principal][20]; (2) by using [AAD Pod Identity][23]; or (3) by using a storage account access key.
+There are several ways Velero can authenticate to Azure: (1) by using a Velero-specific [service principal][20]; (2) by using [Azure AD Workload Identity][28]; (3) by using [AAD Pod Identity][23]; or (4) by using a storage account access key.
 
-If you plan to use Velero to take Azure snapshots of your persistent volume managed disks, you **must** use the service principal or AAD Pod Identity method.
+_**Note**: ADD Pod Identity is deprecated by Azure and has been replaces with Azure AD Workload Identity.
 
-If you don't plan to take Azure disk snapshots, any method is valid.
+If you plan to use Velero to take Azure snapshots of your persistent volume managed disks, you **must** use the service principal, Azure AD Workload Identity or AAD Pod Identity method.
+
+If you don't plan to take Azure disk snapshots, any method is valid.  
+
 
 ### Specify Roles
-_**Note**: This is only required for (1) by using a Velero-specific service principal and (2) by using ADD Pod Identity._  
+_**Note**: This is only required for (1) by using a Velero-specific service principal, (2) by using Azure AD Workload Identity and (3) by using ADD Pod Identity._  
 
 1. Obtain your Azure Account Subscription ID:
    ```
@@ -282,7 +285,7 @@ _**Note**: This is only required for (1) by using a Velero-specific service prin
 
     > available `AZURE_CLOUD_NAME` values: `AzurePublicCloud`, `AzureUSGovernmentCloud`, `AzureChinaCloud`
 
-### Option 2: Use AAD Pod Identity
+### Option 3: Use AAD Pod Identity
 
 These instructions have been adapted from the [aad-pod-identity documentation][24].
 
@@ -354,7 +357,7 @@ Before proceeding, ensure that you have installed and configured [aad-pod-identi
     > available `AZURE_CLOUD_NAME` values: `AzurePublicCloud`, `AzureUSGovernmentCloud`, `AzureChinaCloud`
 
 
-### Option 3: Use storage account access key
+### Option 4: Use storage account access key
 
 _Note: this option is **not valid** if you are planning to take Azure snapshots of your managed disks with Velero._
 
@@ -508,6 +511,7 @@ To improve security within Azure, it's good practice [to disable public traffic 
 [25]: https://azure.microsoft.com/en-us/services/kubernetes-service/
 [26]: https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security
 [27]: https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview
+[28]: https://github.com/Azure/azure-workload-identity
 [101]: https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/workflows/Main%20CI/badge.svg
 [102]: https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/actions?query=workflow%3A"Main+CI"
 [103]: https://github.com/vmware-tanzu/velero/issues/new/choose 
